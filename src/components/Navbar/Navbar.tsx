@@ -1,15 +1,33 @@
 import { Badge, Space } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import "./navbar.css";
+import { UpdateSearch } from "../../features/product/ProductSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useEffect } from "react";
+import { getAllCart } from "../../features/product/Helpers/getAllCart";
+import { Link } from "react-router-dom";
 export const Navbar = () => {
+  const dispatch = useAppDispatch();
+  const { allCart } = useAppSelector((store) => store.product);
+  const handelSearch = (e: any) => {
+    dispatch(UpdateSearch(e.target.value));
+  };
+  useEffect(() => {
+    dispatch(getAllCart());
+  }, []);
   return (
     <div className="navbar-container">
-      <h2>navbar</h2>
+      <div >
+        <h2>navbar</h2>
+        <input placeholder="search product" onChange={handelSearch} />
+      </div>
 
       <Space>
-        <Badge size="small" count={5}>
-          <ShoppingCartOutlined style={{fontSize:"2rem"}}/>
-        </Badge>
+        <Link to="/cart">
+          <Badge size="small" count={allCart.length}>
+            <ShoppingCartOutlined style={{ fontSize: "2rem" }} />
+          </Badge>
+        </Link>
       </Space>
     </div>
   );

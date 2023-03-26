@@ -1,4 +1,4 @@
-.product-listing{
+.cart-listing{
     display: flex;
     flex-wrap: wrap;
     gap:1rem;

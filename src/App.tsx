@@ -1,13 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import { CartListing } from './pages/CartListing/CartListing';
 import { ProductListing } from './pages/ProductListing/ProductListing';
+import { SingleProduct } from './pages/SingleProduct/SingleProduct';
 
 function App() {
   return (
     <div className="App">
-      <ProductListing/>
+      
+      <Routes>
+        <Route path="/" element= {<ProductListing/>}/>
+        <Route path="/product/:id" element= {<SingleProduct/>}/>
+        <Route path="/cart" element= {<CartListing/>}/>
+      </Routes>
     </div>
   );
 }
