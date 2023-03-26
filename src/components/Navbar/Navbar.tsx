@@ -1,4 +1,4 @@
-import { Badge, Space } from "antd";
+import { Badge, Input, Space } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import "./navbar.css";
 import { UpdateSearch } from "../../features/product/ProductSlice";
@@ -17,18 +17,20 @@ export const Navbar = () => {
   }, []);
   return (
     <div className="navbar-container">
-      <div >
-        <h2>navbar</h2>
-        <input placeholder="search product" onChange={handelSearch} />
-      </div>
+      <Link to="/" style={{textDecoration:"none"}}>
+        <h2>Moonshot E-Commerce</h2>
+      </Link>
 
-      <Space>
-        <Link to="/cart">
-          <Badge size="small" count={allCart.length}>
-            <ShoppingCartOutlined style={{ fontSize: "2rem" }} />
-          </Badge>
-        </Link>
-      </Space>
+      <div className="navbar-sub" >
+        <Input placeholder="search product" onChange={handelSearch} />
+        <Space>
+          <Link to="/cart">
+            <Badge size="small" count={allCart.length}>
+              <ShoppingCartOutlined style={{ fontSize: "2rem" }} />
+            </Badge>
+          </Link>
+        </Space>
+      </div>
     </div>
   );
 };

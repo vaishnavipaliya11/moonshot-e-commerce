@@ -12,6 +12,15 @@ export interface Product {
   image: string;
 }
 
+export interface Cartproduct{
+  id: number;
+  title: string;
+  price: string;
+  description: string;
+  image: string;
+  qty?:number
+}
+
 export interface Products {
   loading: boolean;
   allproducts: Product[];
@@ -47,6 +56,16 @@ export const productSlice = createSlice({
     UpdateCart: (state, action) => {
       state.allCart = action.payload;
     },
+    IncCartQty: (state, action) => {
+      state.allCart = state.allCart.map((data: any) =>
+        data.id === action.payload ? { ...data, qty: data.qty + 1 } : data
+      );
+    },
+    DecCartQty: (state, action) => {
+      state.allCart = state.allCart.map((data: any) =>
+        data.id === action.payload ? { ...data, qty: data.qty - 1 } : data
+      );
+    },
   },
 
   extraReducers: (builder) => {
@@ -73,7 +92,7 @@ export const productSlice = createSlice({
     });
     builder.addCase(addToCart.fulfilled, (state, action) => {
       state.cartProduct = action.payload;
-      state.allCart= [...state.allCart, action.payload]
+      state.allCart = [...state.allCart, action.payload];
     });
     builder.addCase(addToCart.rejected, (state) => {
       state.loading = false;
@@ -82,12 +101,12 @@ export const productSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getAllCart.fulfilled, (state, action) => {
-      state.allCart = action.payload;
+      state.allCart = action.payload.map((data: any) => ({ ...data, qty: 1 }));
     });
     builder.addCase(getAllCart.rejected, (state) => {
       state.loading = false;
     });
   },
 });
-export const { UpdateSearch, UpdateCart } = productSlice.actions;
+export const { UpdateSearch, UpdateCart ,DecCartQty,IncCartQty} = productSlice.actions;
 export default productSlice.reducer;

@@ -1,7 +1,7 @@
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart } from "../../features/product/Helpers/addToCart";
 import { Product } from "../../features/product/ProductSlice";
 
@@ -16,7 +16,8 @@ const ProductCard = ({ data }: { data: Product }) => {
       return description;
     }
   };
-
+  
+  const { allCart } = useAppSelector((store) => store.product);
   const { id, description, price, image, title } = data;
   return (
     <Card
@@ -33,10 +34,19 @@ const ProductCard = ({ data }: { data: Product }) => {
         </Link>
       }
       actions={[
-        <Button onClick={() => dispatch(addToCart(data))}>
-          Add to cart
-          <ShoppingCartOutlined />
-        </Button>,
+        <>
+        {allCart.find((data: Product) => Number( data.id) ===  Number(id)) ? (
+          <Link to="/cart">
+            <Button>
+              Go to cart <ShoppingCartOutlined />
+            </Button>
+          </Link>
+        ) : (
+          <Button onClick={() => dispatch(addToCart(data))}>
+            Add to cart <ShoppingCartOutlined />
+          </Button>
+        )}
+        </>
       ]}
     >
       <Link to={`product/${id}`}>

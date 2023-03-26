@@ -1,24 +1,20 @@
 import { Button } from "antd";
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getSingleProduct } from "../../features/product/Helpers/getSingleProduct";
 import "./SingleProduct.css";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Navbar } from "../../components/Navbar/Navbar";
+import { addToCart } from "../../features/product/Helpers/addToCart";
+import { Product } from "../../features/product/ProductSlice";
 export const SingleProduct = () => {
   const { id } = useParams();
   const { singleProduct } = useAppSelector((store) => store.product);
 
-  const {
-    
-    description,
-    image,
-    price,
-    title,
-   
-  } = singleProduct;
+  const { description, image, price, title } = singleProduct;
   const dispatch = useAppDispatch();
+  const { allCart } = useAppSelector((store) => store.product);
   useEffect(() => {
     dispatch(getSingleProduct(id));
   }, []);
@@ -37,16 +33,23 @@ export const SingleProduct = () => {
           <div>
             <div>
               <h1>{title}</h1>
-              <span>
-                {price}
-              </span>
+              <span>{price}</span>
             </div>
             <div>
               <p>{description}</p>
             </div>
-            <Button>
-              Add to cart <ShoppingCartOutlined />
-            </Button>
+
+            {allCart.find((data: Product) => Number( data.id) ===  Number(id)) ? (
+              <Link to="/cart">
+                <Button>
+                  Go to cart <ShoppingCartOutlined />
+                </Button>
+              </Link>
+            ) : (
+              <Button onClick={() => dispatch(addToCart(singleProduct))}>
+                Add to cart <ShoppingCartOutlined />
+              </Button>
+            )}
           </div>
         </div>
       </div>
